@@ -1,0 +1,13 @@
+audio_filepath,image_filepath,Speech to Text,Doctor's Response,output 2,timestamp
+.gradio/flagged/audio_filepath/f311100511bc5ba0abdf/audio.wav,.gradio/flagged/image_filepath/2a27a5201dcb787b1eff/skin_rash.jpg, What is wrong with my hand?,"I cannot diagnose medical conditions from an image. If you're experiencing symptoms or have concerns, consult a qualified healthcare professional for an accurate assessment and personalized advice.",,2025-03-16 11:56:56.576771
+.gradio/flagged/audio_filepath/65dabbe16893529e86bf/audio.wav,.gradio/flagged/image_filepath/bc0f5d0d1ef69336a144/skin_rash.jpg," Hi doctor, what is wrong with my hand?","With what I see, I think you have a red rash on your arm. Medically, this could be a sign of contact dermatitis, an allergic reaction or skin irritation from a substance that's come into contact with your skin. 
+
+Here are some remedies for managing symptoms:
+
+ * Wash the affected area with soap and water
+ * Apply a topical corticosteroid cream to reduce inflammation
+ * Use an antihistamine to reduce itching and swelling
+ * Avoid further exposure to the irritant
+ * Keep the affected area moisturized with a fragrance-free lotion or cream
+
+Please note natural remedies work best in mild cases of contact dermatitis but if the symptoms are severe, seek medical attention from a licensed healthcare professional as soon as possible. They can provide the necessary medical support and guidance, including prescribing medication such as creams, ointments, or oral tablets.",,2025-03-16 12:06:15.683963
