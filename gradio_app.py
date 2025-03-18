@@ -5,6 +5,8 @@ from brain_of_the_doctor import encode_image, analyze_image_with_query, create_p
 from voice_of_the_patient import transcribe_with_groq
 from voice_of_the_doctor import text_to_speech_with_gtts
 from groq import Groq
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 STT_MODEL_ = "whisper-1"
@@ -119,26 +121,30 @@ def process_inputs(audio_path, text_query, image_path):
         logging.error(f"Processing error: {str(e)}")
         return [f"Error: {str(e)}"] * 4
 
-# Gradio interface setup
-iface = gr.Interface(
-    fn=process_inputs,
-    inputs=[
-        gr.Audio(sources=["microphone"], type="filepath", label="Voice Input"),
-        gr.Textbox(label="Text Input", placeholder="Type your query here..."),
-        gr.Image(type="filepath", label="Skin Condition Photo")
-    ],
-    outputs=[
-        gr.Textbox(label="Patient Query"),
-        gr.Textbox(label="Medical Analysis"),
-        gr.Audio(label="Voice Response", autoplay=True),
-        gr.File(label="Download Prescription")
-    ],
-    title="AI Smart Doctor Assistant",
-    description="""Choose your input method (voice or text) and upload a skin photo.
-    Get instant analysis with voice response and downloadable prescription.""",
-    allow_flagging="never"
-)
+app = FastAPI()
 
+with gr.Blocks() as demo:
+    gr.Interface(
+        fn=process_inputs,
+        inputs=[
+            gr.Audio(sources=["microphone"], type="filepath", label="Voice Input"),
+            gr.Textbox(label="Text Input", placeholder="Type your query here..."),
+            gr.Image(type="filepath", label="Skin Condition Photo")
+        ],
+        outputs=[
+            gr.Textbox(label="Patient Query"),
+            gr.Textbox(label="Medical Analysis"),
+            gr.Audio(label="Voice Response", autoplay=True),
+            gr.File(label="Download Prescription")
+        ],
+        title="AI Smart Doctor Assistant",
+        description="""Choose your input method (voice or text) and upload a skin photo.
+        Get instant analysis with voice response and downloadable prescription.""",
+        allow_flagging="never"
+    )
+
+app.mount("/", gr.routes.App.create_app(demo))
+
+# For local development
 if __name__ == "__main__":
-    iface.launch(server_port=7860, show_error=True)
-    print("Server started at http://localhost:7860")
+    demo.launch(server_port=int(os.environ.get("PORT", 7860)))
