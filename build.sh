@@ -1,2 +1,3 @@
 #!/bin/bash
-pip install -r requirements.txt
+set -e
+pip3 install -r requirements.txt
