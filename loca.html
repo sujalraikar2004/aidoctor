@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Demo</title>
+</head>
+<body>
+    <h2>User Location</h2>
+    <label for="coords">Coordinates:</label>
+    <input type="text" id="coords" readonly>
+    
+    <script>
+        function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            pos => {
+                const coords = `${pos.coords.latitude},${pos.coords.longitude}`;
+                document.getElementById("coords").value = coords;
+            },
+            err => console.error("Geolocation error:", err),
+            { enableHighAccuracy: true } // Force GPS for better accuracy
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+    }
+}
+        window.addEventListener('load', getLocation);
+    </script>
+</body>
+</html>

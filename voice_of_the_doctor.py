@@ -10,20 +10,10 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
-
-def text_to_speech_with_gtts(
-    input_text: str,
-    output_filepath: str = "doctor_response",
-    lang: str ='en',
-    slow: bool = False
-) -> Optional[str]:
-    """
-    Convert text to speech using gTTS and convert to proper WAV format.
-    """
+def text_to_speech(text, language, output_filepath="doctor_response"):
     try:
-        # Generate MP3
         mp3_path = f"{output_filepath}.mp3"
-        tts = gTTS(text=input_text, lang=lang, slow=slow)
+        tts = gTTS(text=text, lang=language)
         tts.save(mp3_path)
         
         # Convert to WAV with proper format

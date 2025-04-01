@@ -6,7 +6,13 @@ from docx import Document
 from docx.shared import Inches
 import datetime
 
-logging.basicConfig(level=logging.INFO)
+VISION_MODEL = "llama-3.2-11b-vision-preview"
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+STT_MODEL = "whisper-large-v3"
+TEXT_MODEL = "llama3-8b-8192"
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def encode_image(image_path):
     try:
@@ -16,27 +22,23 @@ def encode_image(image_path):
         logging.error(f"Image encoding failed: {str(e)}")
         return ""
 
-def analyze_image_with_query(query, model, encoded_image):
+def analyze_image(query, image_path, model=VISION_MODEL):
     try:
-        client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
-        
+        encoded_image = encode_image(image_path)
+        client = Groq(api_key=GROQ_API_KEY)
         messages = [{
-            "role": "user",
-            "content": [
+            "role": "user", "content": [
                 {"type": "text", "text": query},
-                {"type": "image_url", "image_url": {
-                    "url": f"data:image/jpeg;base64,{encoded_image}"
-                }}
+                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{encoded_image}"}}
             ]
         }]
-
         response = client.chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=0.2,
-            max_tokens=500
+            model=model, messages=messages
         )
         return response.choices[0].message.content
+    except Exception as e:
+        logging.error(f"Vision API error: {e}")
+        return "Could not analyze image."
     
     except Exception as e:
         logging.error(f"Vision API error: {str(e)}")

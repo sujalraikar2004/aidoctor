@@ -53,7 +53,7 @@ from groq import Groq
 GROQ_API_KEY=os.environ.get("GROQ_API_KEY")
 stt_model="whisper-large-v3"
 
-def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
+def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY,language):
     try:
 
         client = Groq(api_key=GROQ_API_KEY)
@@ -62,7 +62,7 @@ def transcribe_with_groq(stt_model, audio_filepath, GROQ_API_KEY):
             result = client.audio.transcriptions.create(
                 file=audio_file,
                 model=stt_model,
-                language="en",
+                language=language,
             )
         return result.text
     
